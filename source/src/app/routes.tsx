@@ -79,6 +79,7 @@ const CustomerNotifications = lazy(() => lazyRetry(() => import("./pages/custome
 const CustomerAIChatbot = lazy(() => lazyRetry(() => import("./pages/customer/CustomerAIChatbot").then(m => ({ default: m.CustomerAIChatbot }))));
 const CustomerVoiceAssistant = lazy(() => lazyRetry(() => import("./pages/customer/CustomerVoiceAssistant").then(m => ({ default: m.CustomerVoiceAssistant }))));
 const OperatorLogin = lazy(() => lazyRetry(() => import("./pages/operator/OperatorLogin").then(m => ({ default: m.OperatorLogin }))));
+const SignUp = lazy(() => lazyRetry(() => import("./pages/SignUp").then(m => ({ default: m.SignUp }))));
 const OperatorOperations = lazy(() => lazyRetry(() => import("./pages/operator/OperatorOperations").then(m => ({ default: m.OperatorOperations }))));
 const OperatorAIChatbot = lazy(() => lazyRetry(() => import("./pages/operator/OperatorAIChatbot").then(m => ({ default: m.OperatorAIChatbot }))));
 const OperatorVoiceAssistant = lazy(() => lazyRetry(() => import("./pages/operator/OperatorVoiceAssistant").then(m => ({ default: m.OperatorVoiceAssistant }))));
@@ -198,6 +199,7 @@ export const router = createBrowserRouter([
       { path: "agent/login", element: <SuspenseWrap><AgentLogin /></SuspenseWrap> },
       { path: "customer/login", element: <SuspenseWrap><CustomerLogin /></SuspenseWrap> },
       { path: "operator/login", element: <SuspenseWrap><OperatorLogin /></SuspenseWrap> },
+      { path: "signup", element: <SuspenseWrap><SignUp /></SuspenseWrap> },
 
       // ── Admin Portal (unified layout) ─────────────────────────────
       {

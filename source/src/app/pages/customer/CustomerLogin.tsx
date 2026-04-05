@@ -346,12 +346,18 @@ export function CustomerLogin() {
         </AnimatePresence>
 
         {/* Back link */}
-        <div className="mt-4 text-center">
+        <div className="mt-4 text-center space-y-2">
           <button
             onClick={() => setShowForgotPw(true)}
-            className={`text-sm font-medium ${dc ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-700"} transition-colors`}
+            className={`block w-full text-sm font-medium ${dc ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-700"} transition-colors`}
           >
             {isUrdu ? "پاس ورڈ بھول گئے؟" : "Forgot Password?"}
+          </button>
+          <button
+            onClick={() => navigate("/signup")}
+            className={`block w-full text-sm font-medium ${dc ? "text-emerald-400 hover:text-emerald-300" : "text-emerald-600 hover:text-emerald-700"} transition-colors`}
+          >
+            {isUrdu ? "نیا اکاؤنٹ بنائیں" : "Create new account"}
           </button>
         </div>
         <div className="mt-2 text-center">
