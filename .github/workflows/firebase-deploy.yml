@@ -11,12 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: source/package-lock.json
+
+      - name: Install Dependencies & Build
+        working-directory: source
+        run: |
+          npm ci
+          npm run build
+          cp -r dist/* ../
+
+      - name: Write Service Account Key
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WASI_APP_1 }}' > ${{ runner.temp }}/service-account.json
 
       - name: Deploy to Firebase Hosting
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WASI_APP_1 }}'
-          channelId: live
-          projectId: wasi-app-1
+        run: npx --yes firebase-tools@latest deploy --only hosting --project wasi-app-1
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/service-account.json
