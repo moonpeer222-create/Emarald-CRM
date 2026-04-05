@@ -1,0 +1,119 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isMaster() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'master_admin';
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' || 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'master_admin');
+    }
+    
+    function isAgent() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'agent';
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isMaster() || isAdmin();
+      allow update: if isOwner(userId) || isAdmin() || isMaster();
+      allow delete: if isMaster();
+    }
+
+    // Customers collection
+    match /customers/{customerId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() || isAgent();
+      allow update: if isAdmin() || isAgent() || 
+        (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow delete: if isAdmin() || isMaster();
+    }
+
+    // Cases/Deals collection
+    match /cases/{caseId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() || isAgent();
+      allow update: if isAdmin() || isAgent() || 
+        (isAuthenticated() && resource.data.assignedTo == request.auth.uid);
+      allow delete: if isAdmin() || isMaster();
+    }
+    
+    // Deals collection
+    match /deals/{dealId} {
+      allow read: if isAuthenticated();
+      allow create: if isAdmin() || isAgent();
+      allow update: if isAdmin() || isAgent() || 
+        (isAuthenticated() && resource.data.assignedTo == request.auth.uid);
+      allow delete: if isAdmin() || isMaster();
+    }
+
+    // Payments collection
+    match /payments/{paymentId} {
+      allow read: if isAdmin() || isMaster() || 
+        (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow create: if isAdmin() || isAgent();
+      allow update: if isAdmin() || isMaster();
+      allow delete: if isMaster();
+    }
+
+    // Audit Logs
+    match /audit_logs/{logId} {
+      allow read: if isMaster() || isAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+    
+    // Activity logs
+    match /activities/{activityId} {
+      allow read: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin() || isMaster());
+      allow create: if isAuthenticated();
+      allow update: if isAdmin() || isMaster();
+      allow delete: if isMaster();
+    }
+
+    // Notifications
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isAdmin() || isMaster();
+      allow update: if isOwner(resource.data.userId);
+      allow delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+    
+    // Documents
+    match /documents/{documentId} {
+      allow read: if isAuthenticated() && 
+        (resource.data.userId == request.auth.uid || isAdmin() || isAgent());
+      allow create: if isAdmin() || isAgent() || isAuthenticated();
+      allow update: if isAdmin() || isAgent() || 
+        (isAuthenticated() && resource.data.userId == request.auth.uid);
+      allow delete: if isAdmin() || isMaster();
+    }
+    
+    // Settings/Business config
+    match /settings/{settingId} {
+      allow read: if isAuthenticated();
+      allow create, update, delete: if isMaster() || isAdmin();
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
