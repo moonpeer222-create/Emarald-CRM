@@ -1,12 +1,12 @@
 /**
- * Universal CRM Pro — Service Worker
+ * Universal CRM — Service Worker
  * Offline-first strategy:
  *  - Cache-first for static assets (JS/CSS/images)
  *  - Network-first with IndexedDB queue for API mutations (POST/PUT/DELETE)
  *  - Background sync to replay queued mutations when network returns
  */
 
-const CACHE_NAME = "universal-crm-v1";
+const CACHE_NAME = "universal-crm-v2";
 const STATIC_URLS = ["/", "/index.html"];
 
 // ── Install: pre-cache shell ──────────────────────────────────────────
@@ -67,7 +67,7 @@ self.addEventListener("fetch", (event) => {
 });
 
 // ── Background Sync: replay queued mutations ──────────────────────────
-const DB_NAME = "universal-crm-offline-queue";
+const DB_NAME = "emerald-offline-queue";
 const DB_STORE = "mutations";
 
 function openDB() {
