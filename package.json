@@ -1,4 +1,9 @@
 {
+  "name": "universal-crm-deploy",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "cd source && npm ci && npm run build && cp -r dist/* ../"
+  },
   "dependencies": {
     "firebase": "^12.11.0"
   }
