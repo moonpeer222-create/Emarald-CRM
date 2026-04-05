@@ -1,0 +1,71 @@
+{
+  "hardcoded_names": {},
+  "brand_references": {},
+  "phone_numbers": [
+    "+92 300 0000000",
+    "+92 300 0000007",
+    "+923000000000",
+    "+923000000001"
+  ],
+  "whatsapp_numbers": [
+    "923000000000",
+    "923000000001"
+  ],
+  "emails_in_assets": [
+    "admin@universalcrm.com",
+    "info@universalcrmconsultancy.com",
+    "name@universalcrm.com"
+  ],
+  "localStorage_keys": [
+    "__crm_panic__",
+    "crm_admin_profile",
+    "crm_attendance",
+    "crm_audit_log",
+    "crm_audit_logs",
+    "crm_business_type",
+    "crm_cases",
+    "crm_document_files",
+    "crm_last_sync",
+    "crm_leave_requests",
+    "crm_notifications",
+    "crm_passport_tracking",
+    "crm_settings",
+    "crm_users",
+    "crm_users_db",
+    "crmrewards_badges",
+    "crmrewards_classic",
+    "crmrewards_features",
+    "crmrewards_satisfaction",
+    "crmrewards_xp",
+    "emerald-admin-auth",
+    "emerald-agent-active-state",
+    "emerald-agent-codes",
+    "emerald-agent-session",
+    "emerald-code-history",
+    "emerald-dark-mode",
+    "emerald-known-agents",
+    "emerald-language",
+    "emerald-master-auth",
+    "emerald-operator-session",
+    "emerald_agent_access_codes",
+    "notification_sound_enabled"
+  ],
+  "hardcoded_credentials_found": false,
+  "firebase_config_consistency": {
+    "index.html": "real",
+    "CHANGELOG.md": "real",
+    "SECURITY_CONFIG.md": "real"
+  },
+  "database_rules_issues": [],
+  "login_pages_status": {
+    "AdminLogin-BmZR_UD-.js": "clean",
+    "AgentLogin-DEja8zMG.js": "clean",
+    "CustomerLogin-X9yeTpYa.js": "clean",
+    "MasterLogin-BeTQDwrf.js": "clean",
+    "OperatorLogin-CzbHaKNQ.js": "clean"
+  },
+  "index_html_issues": [
+    "Script tag mismatch"
+  ],
+  "missing_configs": []
+}

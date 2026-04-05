@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "wasi-app-1"
+  },
+  "targets": {
+    "wasi-app-1": {
+      "hosting": {
+        "main": [
+          "wasi-app-1"
+        ]
+      }
+    }
+  }
+}

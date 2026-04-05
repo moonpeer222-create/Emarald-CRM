@@ -1,0 +1,59 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'master_admin'",
+        ".write": "$uid === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'master_admin'",
+        ".validate": "newData.hasChildren(['email', 'name', 'role', 'createdAt'])",
+        "email": {
+          ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$/)"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "role": {
+          ".validate": "newData.val() === 'master_admin' || newData.val() === 'admin' || newData.val() === 'agent' || newData.val() === 'customer'"
+        },
+        "isActive": {
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    },
+    "customers": {
+      ".read": "auth.uid !== null",
+      ".write": "root.child('users').child(auth.uid).child('role').val() !== 'agent'",
+      "$customerId": {
+        ".read": "auth.uid !== null",
+        ".write": "root.child('users').child(auth.uid).child('role').val() === 'master_admin' || root.child('users').child(auth.uid).child('role').val() === 'admin'"
+      }
+    },
+    "cases": {
+      ".read": "auth.uid !== null",
+      ".write": "auth.uid !== null",
+      "$caseId": {
+        ".read": "auth.uid !== null",
+        ".write": "root.child('users').child(auth.uid).child('role').val() === 'master_admin' || root.child('users').child(auth.uid).child('role').val() === 'admin' || data.child('agentId').val() === auth.uid"
+      }
+    },
+    "documents": {
+      ".read": "auth.uid !== null",
+      ".write": "auth.uid !== null",
+      "$docId": {
+        ".read": "auth.uid !== null",
+        ".write": "data.child('uploadedBy').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'master_admin'"
+      }
+    },
+    "audit_logs": {
+      ".read": "root.child('users').child(auth.uid).child('role').val() === 'master_admin'",
+      ".write": "false"
+    },
+    "settings": {
+      ".read": "auth.uid !== null",
+      ".write": "root.child('users').child(auth.uid).child('role').val() === 'master_admin'",
+      "$setting": {
+        ".read": "auth.uid !== null",
+        ".write": "root.child('users').child(auth.uid).child('role').val() === 'master_admin'"
+      }
+    }
+  }
+}

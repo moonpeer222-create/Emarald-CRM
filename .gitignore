@@ -1,0 +1,11 @@
+﻿serviceAccountKey.json
+node_modules/
+node_modules.rar
+.env
+.env.local
+firebase-debug.log
+.firebase/hosting.*
+source/node_modules/
+source/dist/
+coverage/
+*.log
