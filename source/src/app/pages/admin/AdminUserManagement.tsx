@@ -89,7 +89,7 @@ export function AdminUserManagement() {
     }
 
     const lt = toast.loading("Creating user...");
-    setTimeout(async () => {
+    try {
       const agentId = newUser.role === "agent" ? await UserDB.getNextAgentId() : undefined;
       const created = await UserDB.createUser({
         fullName: newUser.fullName,
@@ -105,15 +105,12 @@ export function AdminUserManagement() {
       // Auto-register agent in access code system
       if (newUser.role === "agent" && agentId) {
         const agentCode = AccessCodeService.registerAgent(agentId, newUser.fullName);
-        toast.dismiss(lt);
         toast.success(`Agent ${newUser.fullName} created! Access code: ${agentCode.code}`);
         NotificationService.notifyUserCreated(newUser.fullName, "Agent");
       } else if (newUser.role === "customer") {
-        toast.dismiss(lt);
         toast.success(`Customer ${newUser.fullName} created! Login: ${newUser.email} / ${newUser.password}`);
         NotificationService.notifyUserCreated(newUser.fullName, "Customer");
       } else {
-        toast.dismiss(lt);
         toast.success(`User ${newUser.fullName} created successfully!`);
         NotificationService.notifyUserCreated(newUser.fullName, newUser.role);
       }
@@ -122,7 +119,12 @@ export function AdminUserManagement() {
       setUsers(all);
       setShowCreateModal(false);
       setNewUser({ fullName: "", email: "", phone: "", password: "", role: "customer", caseId: "" });
-    }, 800);
+    } catch (error: any) {
+      toast.error(error.message || "Failed to create user");
+      console.error("Create user error:", error);
+    } finally {
+      toast.dismiss(lt);
+    }
   };
 
   const handleUpdateUser = () => {
