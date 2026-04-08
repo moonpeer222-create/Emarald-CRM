@@ -352,11 +352,12 @@ export class CRMDataStore {
 
   static async initialize(): Promise<void> {
     if (this._initialized) return;
-    const tenantId = localStorage.getItem("crm_tenant_id");
+    let tenantId = localStorage.getItem("crm_tenant_id");
+    // Auto-set default tenant if none exists
     if (!tenantId) {
-      this._cache = this._loadFromLocal();
-      this._initialized = true;
-      return;
+      tenantId = "default";
+      localStorage.setItem("crm_tenant_id", tenantId);
+      console.log("[CRMDataStore] Auto-set tenant ID to 'default'");
     }
 
     try {
